@@ -12,18 +12,22 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+
+  // Create a new user of data
   const collectData = async () => {
-    let result = await fetch("http://localhost:3003/register", {
-      method: "post",
+    const response = await fetch("http://localhost:3003/register", {
+      method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-
-    result = await result.json();
+    const result = await response.json();
     console.log(result);
-    navigate("/");
+    //setData([...data, json]);
+    setName('');
+    setEmail('');
+    setPassword('');
   };
 
   return (

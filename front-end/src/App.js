@@ -10,23 +10,7 @@ import SignUp from "./products/SignUp";
 
 function App() {
   return (
-    <div className="App">
-<<<<<<< Updated upstream
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-=======
+    
       <BrowserRouter>
         <Nav />
         <Routes>
@@ -38,8 +22,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
->>>>>>> Stashed changes
-    </div>
+    
   );
 }
 
