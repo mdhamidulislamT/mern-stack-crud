@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-const Nav = () => {
+const Header = () => {
   return (
     <div>
       <ul className="nav-ul">
@@ -32,4 +32,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default Header;
