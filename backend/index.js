@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDB = require("./DBconnect/config");
 require("./DBconnect/config");
 const User = require("./DBconnect/User");
+const Product = require("./DBconnect/Product");
 const app = express();
 const PORT = 3003;
 
@@ -25,11 +26,11 @@ app.post("/register", async (req, res) => {
 
     let userData = await newUser.save();
     userData = userData.toObject();
-    delete userData.password
+    delete userData.password;
 
     res.status(200).send({
       message: "User created successfully!",
-      data: {userData},
+      data: { userData },
     });
   } catch (error) {
     res.status(500).send({
@@ -49,21 +50,42 @@ app.post("/login", async (req, res) => {
           message: "User created successfully!",
           data: user,
         });
-
       } else {
         res.status(200).send({
           message: "No User Found!.",
           data: "",
         });
       }
-
     } else {
       res.status(200).send({
         message: "No User Found.No!.",
         data: "",
       });
     }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
 
+// Create A Product
+app.post("/products", async (req, res) => {
+  try {
+    const { name, price, category, userId } = req.body;
+    const newProduct = new Product({
+      name: name,
+      price: price,
+      category: category,
+      userId: userId,
+    });
+
+    let productData = await newProduct.save();
+
+    res.status(200).send({
+      message: "Product Data created successfully!",
+      data: { productData },
+    });
   } catch (error) {
     res.status(500).send({
       message: error.message,
