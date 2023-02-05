@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 
 function SignUp() {
@@ -11,6 +11,14 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const auth = localStorage.getItem('user');
+    if (auth) {
+      navigate('/');
+    }
+
+  },[])
 
 
   // Create a new user of data
@@ -23,11 +31,8 @@ function SignUp() {
       },
     });
     const result = await response.json();
-    console.log(result);
-    //setData([...data, json]);
-    setName('');
-    setEmail('');
-    setPassword('');
+    navigate('/');
+    localStorage.setItem('user', JSON.stringify(result))
   };
 
   return (
