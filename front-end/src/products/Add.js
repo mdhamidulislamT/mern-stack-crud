@@ -15,7 +15,8 @@ function Add() {
 
   // Create a new user of data
   const collectData = async () => {
-    let userId = JSON.parse(localStorage.getItem("user")).data.id;
+    let userId = JSON.parse(localStorage.getItem("user")).data._id;
+    console.log(userId);
 
     const response = await fetch("http://localhost:3003/products", {
       method: "POST",
@@ -26,7 +27,15 @@ function Add() {
     });
 
     const result = await response.json();
-    
+    if (result.data) {
+      setName('')
+      setPrice('')
+      setCategory('')
+      alert(result.message)
+    } else {
+      alert(JSON.stringify(result))
+    }
+        
   };
 
   return (

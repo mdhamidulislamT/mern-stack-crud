@@ -77,7 +77,7 @@ app.post("/products", async (req, res) => {
       name: name,
       price: price,
       category: category,
-      userId: userId,
+      userId: userId
     });
 
     let productData = await newProduct.save();
