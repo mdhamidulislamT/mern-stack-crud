@@ -7,6 +7,7 @@ import Edit from "./products/Edit";
 import SignUp from "./products/SignUp";
 import Header2 from "./Header2";
 import PrivateComponent from "./components/PrivateComponent";
+import Login from "./components/Login";
 
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/profile" element={<h1> profile compoenent</h1>} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     

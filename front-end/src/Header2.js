@@ -5,28 +5,39 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
 
 function Header2() {
-
-  const auth = localStorage.getItem('user');
+  const auth = localStorage.getItem("user");
   const navigate = useNavigate();
-  const logout=()=>{
-      localStorage.clear();
-      navigate('/signup');
-  }
+  const logout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+        <Navbar.Brand href="/">E-Dashboard</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link to="/"> Products </Nav.Link>
-            <Nav.Link href="/add"> Add Product </Nav.Link>
-          </Nav>
+          {auth ? (
+            <Nav className="me-auto">
+              <Nav.Link href="/"> Products </Nav.Link>
+              <Nav.Link href="/add"> Add Product </Nav.Link>
+            </Nav>
+          ) : (
+            <Nav className="me-auto"> </Nav>
+          )}
+
           <Nav>
-            { auth ? <Nav.Link onClick={logout} href="/signup"> Logout </Nav.Link> :
-            <Nav.Link href="/signup"> Signup </Nav.Link> }
-            <Nav.Link href="/profile"> Profile</Nav.Link>
+            {auth ? (
+              <Nav.Link onClick={logout} href="/login">
+                {" "}
+                Logout{" "}
+              </Nav.Link>
+            ) : (
+              <Nav.Link href="/login"> Login </Nav.Link>
+            )}
+            <Nav.Link className="text-info" href="/profile"> {auth? JSON.parse(auth).data.name : ''} </Nav.Link>
+            {auth ? "" : <Nav.Link href="/signup"> Signup </Nav.Link>}
           </Nav>
         </Navbar.Collapse>
       </Container>

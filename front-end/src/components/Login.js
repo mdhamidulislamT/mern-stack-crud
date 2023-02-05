@@ -5,54 +5,47 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
-import Hero from "../components/Hero";
+import Hero from "./Hero";
 
-function SignUp() {
-  const [name, setName] = useState("");
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    const auth = localStorage.getItem('user');
+  useEffect(() => {
+    const auth = localStorage.getItem("user");
     if (auth) {
-      navigate('/');
+      navigate("/");
     }
-
-  },[])
-
+  }, []);
 
   // Create a new user of data
   const collectData = async () => {
-    const response = await fetch("http://localhost:3003/register", {
+    const response = await fetch("http://localhost:3003/login", {
       method: "POST",
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ email, password }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const result = await response.json();
-    navigate('/');
-    localStorage.setItem('user', JSON.stringify(result))
+
+    const user = await response.json();
+    if (user.data.name) {
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/");
+    } else {
+      alert("Please Enter correct details")
+    }
+
   };
 
   return (
     <Container>
+      <Hero title="Login to System" />
       <Row>
-      <Hero title="Sign Up Now" />
         <Col md={3}></Col>
         <Col md={6}>
           <Form>
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -61,9 +54,6 @@ function SignUp() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -81,7 +71,7 @@ function SignUp() {
               size="lg"
               onClick={collectData}
             >
-              Submit
+              Login
             </Button>
           </Form>
         </Col>
@@ -90,4 +80,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Login;
