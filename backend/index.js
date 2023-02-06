@@ -93,6 +93,24 @@ app.post("/products", async (req, res) => {
   }
 });
 
+// Get All Products
+app.get("/products", async (req, res) => {
+  try {
+
+
+    let products = await Product.find()
+
+    res.status(200).send({
+      message: "Products Data fetched successfully!",
+      data: { products },
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 app.listen(PORT, async () => {
   await connectDB();
 

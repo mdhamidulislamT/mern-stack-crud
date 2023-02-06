@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import List from "./products/List";
+import ProductList from "./products/ProductList";
 import Add from "./products/Add";
 import Edit from "./products/Edit";
 import SignUp from "./products/SignUp";
@@ -18,7 +18,7 @@ function App() {
         <Header2 />
         <Routes>
           <Route element={<PrivateComponent/>} >
-          <Route path="/" element={<List />} />
+          <Route path="/" element={<ProductList />} />
           <Route path="/add" element={<Add />} />
           <Route path="/edit" element={<Edit />} />
           <Route path="/logout" element={<h1>logout compoenent</h1>} />

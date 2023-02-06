@@ -11,12 +11,18 @@ function Add() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   // Create a new user of data
   const collectData = async () => {
     let userId = JSON.parse(localStorage.getItem("user")).data._id;
-    console.log(userId);
+
+    if (!name || !price || !category) {
+      setError(true);
+      // <span className="text-danger">required field</span>
+      return;
+    }
 
     const response = await fetch("http://localhost:3003/products", {
       method: "POST",
@@ -28,14 +34,13 @@ function Add() {
 
     const result = await response.json();
     if (result.data) {
-      setName('')
-      setPrice('')
-      setCategory('')
-      alert(result.message)
+      setName("");
+      setPrice("");
+      setCategory("");
+      alert(result.message);
     } else {
-      alert(JSON.stringify(result))
+      alert(JSON.stringify(result));
     }
-        
   };
 
   return (
@@ -45,6 +50,7 @@ function Add() {
         <Col md={3}></Col>
         <Col md={6}>
           <Form>
+            
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -53,9 +59,10 @@ function Add() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              { error ? !name ? <span className="text-danger"> required field </span> : '' : '' }
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicCategory">
               <Form.Label> Category </Form.Label>
               <Form.Control
                 type="text"
@@ -63,6 +70,7 @@ function Add() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />
+              { error ? !category ? <span className="text-danger"> required field </span> : '' : '' }
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -73,6 +81,8 @@ function Add() {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
+              { error ? !price ? <span className="text-danger"> required field </span> : '' : '' }
+
             </Form.Group>
             <Button
               variant="primary"
