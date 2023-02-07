@@ -4,16 +4,36 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import Hero from "../components/Hero";
 
-function Add() {
+function Update() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [error, setError] = useState(false);
-  
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+  useEffect(() => {
+    getProduct();
+  }, []);
+
   // Create a new user of data
+  const getProduct = async () => {
+    let userId = JSON.parse(localStorage.getItem("user")).data._id;
+
+    if (id) {
+      let result = await fetch(`http://localhost:3003/products/${id}`);
+      result = await result.json();
+
+      setName(result.data.name);
+      setPrice(result.data.price);
+      setCategory(result.data.category);
+    }
+  };
+
+  // Update a new user of data
   const collectData = async () => {
     let userId = JSON.parse(localStorage.getItem("user")).data._id;
 
@@ -22,33 +42,29 @@ function Add() {
       return;
     }
 
-    const response = await fetch("http://localhost:3003/products", {
-      method: "POST",
-      body: JSON.stringify({ name, price, category, userId }),
+    const response = await fetch(`http://localhost:3003/products/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ name, price, category }),
       headers: {
         "Content-Type": "application/json",
       },
+    }).then(async (response) => {
+      console.log("status code", response.status);
+      if (response.status == 200) {
+        navigate('/');
+      } else {
+        alert("Error! Please try again.");
+      }
     });
-
-    const result = await response.json();
-    if (result.data) {
-      setName("");
-      setPrice("");
-      setCategory("");
-      alert(result.message);
-    } else {
-      alert(JSON.stringify(result));
-    }
   };
 
   return (
     <Container>
       <Row>
-        <Hero title="Add A New Product" />
+        <Hero title="Update Product" />
         <Col md={3}></Col>
         <Col md={6}>
           <Form>
-            
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -57,7 +73,15 @@ function Add() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              { error ? !name ? <span className="text-danger"> required field </span> : '' : '' }
+              {error ? (
+                !name ? (
+                  <span className="text-danger"> required field </span>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicCategory">
@@ -68,7 +92,15 @@ function Add() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />
-              { error ? !category ? <span className="text-danger"> required field </span> : '' : '' }
+              {error ? (
+                !category ? (
+                  <span className="text-danger"> required field </span>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -79,8 +111,15 @@ function Add() {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
-              { error ? !price ? <span className="text-danger"> required field </span> : '' : '' }
-
+              {error ? (
+                !price ? (
+                  <span className="text-danger"> required field </span>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
             </Form.Group>
             <Button
               variant="primary"
@@ -97,4 +136,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default Update;

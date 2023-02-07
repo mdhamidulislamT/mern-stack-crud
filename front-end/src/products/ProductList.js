@@ -20,7 +20,6 @@ const ProductList = () => {
         setProducts(result.data.products);
       };
 
-
     return (
       <Container>
         <Row>

@@ -69,6 +69,22 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Get All Products
+app.get("/products", async (req, res) => {
+  try {
+    let products = await Product.find();
+
+    res.status(200).send({
+      message: "All Products Data fetched successfully!",
+      data: { products },
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 // Create A Product
 app.post("/products", async (req, res) => {
   try {
@@ -77,7 +93,7 @@ app.post("/products", async (req, res) => {
       name: name,
       price: price,
       category: category,
-      userId: userId
+      userId: userId,
     });
 
     let productData = await newProduct.save();
@@ -93,17 +109,46 @@ app.post("/products", async (req, res) => {
   }
 });
 
-// Get All Products
-app.get("/products", async (req, res) => {
+// Get A Product
+app.get("/products/:id", async (req, res) => {
   try {
-
-
-    let products = await Product.find()
-
-    res.status(200).send({
-      message: "Products Data fetched successfully!",
-      data: { products },
+    const product = await Product.findById({ _id: req.params.id });
+    if (product) {
+      res.status(200).send({
+        success: true,
+        message: "Product Found",
+        data: product,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "Product not Found",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
     });
+  }
+});
+
+// Update Product
+app.put("/products/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedProduct = await Product.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+          category: req.body.category,
+        },
+      },
+      { new: true }
+    );
+
+    res.send({message: "Product Data created successfully!"});
   } catch (error) {
     res.status(500).send({
       message: error.message,

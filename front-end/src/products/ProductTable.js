@@ -1,4 +1,6 @@
 import Table from 'react-bootstrap/Table';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 function ProductTable(props) {
     let products = props.products;
@@ -26,7 +28,12 @@ function ProductTable(props) {
                         <td>{prodduct.name}</td>
                         <td>{prodduct.category}</td>
                         <td>{prodduct.price}</td>
-                        <td>Edit</td>
+                        <td>
+                            <Link  to={"/edit/"+prodduct._id}>  Edit </Link>
+                          <Button variant="danger"  >
+                            Delete
+                          </Button>
+                        </td>
                     </tr>
                  
                 ))

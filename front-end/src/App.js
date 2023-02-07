@@ -3,7 +3,7 @@ import Header from "./Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductList from "./products/ProductList";
 import Add from "./products/Add";
-import Edit from "./products/Edit";
+import Update from "./products/Update";
 import SignUp from "./products/SignUp";
 import Header2 from "./Header2";
 import PrivateComponent from "./components/PrivateComponent";
@@ -20,7 +20,7 @@ function App() {
           <Route element={<PrivateComponent/>} >
           <Route path="/" element={<ProductList />} />
           <Route path="/add" element={<Add />} />
-          <Route path="/edit" element={<Edit />} />
+          <Route path="/edit/:id" element={<Update />} />
           <Route path="/logout" element={<h1>logout compoenent</h1>} />
           <Route path="/profile" element={<h1> profile compoenent</h1>} />
           </Route>
