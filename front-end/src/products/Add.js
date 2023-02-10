@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
+import { ToastContainer, toast } from 'react-toastify';
 
 function Add() {
   const [name, setName] = useState("");
@@ -13,6 +14,12 @@ function Add() {
   const [category, setCategory] = useState("");
   const [error, setError] = useState(false);
   
+  const notify = (msg) => toast.success(msg, {
+    theme: "colored"
+  })
+  const notifyEror = (msg) => toast.error(msg, {
+    theme: "colored"
+  })
   // Create a new user of data
   const collectData = async () => {
     let userId = JSON.parse(localStorage.getItem("user")).data._id;
@@ -32,12 +39,12 @@ function Add() {
 
     const result = await response.json();
     if (result.data) {
+      notify(result.message);
       setName("");
       setPrice("");
       setCategory("");
-      alert(result.message);
     } else {
-      alert(JSON.stringify(result));
+      notifyEror("Error! Please try again.");
     }
   };
 
@@ -74,8 +81,8 @@ function Add() {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label> Price </Form.Label>
               <Form.Control
-                type="number"
-                placeholder="Price"
+                type="text"
+                placeholder="Price :250"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -93,6 +100,8 @@ function Add() {
           </Form>
         </Col>
       </Row>
+      <ToastContainer />
+
     </Container>
   );
 }

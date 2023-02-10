@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { json, useNavigate, useParams } from "react-router-dom";
 import Hero from "../components/Hero";
+import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
   const [name, setName] = useState("");
@@ -14,6 +15,9 @@ function Update() {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
+  const notifyEror = (msg) => toast.error(msg, {
+    theme: "colored"
+  })
   const { id } = useParams();
   useEffect(() => {
     getProduct();
@@ -53,7 +57,7 @@ function Update() {
       if (response.status == 200) {
         navigate('/');
       } else {
-        alert("Error! Please try again.");
+        notifyEror("Error! Please try again.");
       }
     });
   };
@@ -106,7 +110,7 @@ function Update() {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label> Price </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
@@ -132,6 +136,9 @@ function Update() {
           </Form>
         </Col>
       </Row>
+      
+      <ToastContainer />
+
     </Container>
   );
 }

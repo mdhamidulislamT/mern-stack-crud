@@ -7,9 +7,19 @@ import ProductTable from "./ProductTable";
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+    const notify = (msg) => toast.success(msg, {
+      theme: "colored"
+    })
+    const notifyEror = (msg) => toast.error(msg, {
+      theme: "colored"
+    })
+    
+
+    
 
   useEffect(() => {
     getProducts();
@@ -31,9 +41,9 @@ const ProductList = () => {
     }).then(async (response) => {
       if (response.status == 200) {
         getProducts();
-        alert("Success! Product deleted");
+        notify("Success! Product deleted");
       } else {
-        alert("Error! Please try again.");
+        notifyEror("Error! Please try again.");
       }
     });
   };
@@ -92,6 +102,8 @@ const ProductList = () => {
     </Table>
         </Col>
       </Row>
+      <ToastContainer />
+
     </Container>
   );
 };
