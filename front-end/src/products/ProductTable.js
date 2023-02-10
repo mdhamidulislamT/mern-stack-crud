@@ -5,6 +5,21 @@ import Button from 'react-bootstrap/Button';
 function ProductTable(props) {
     let products = props.products;
 
+    // Delete a Product
+  const deleteProduct = async (id = 99) => {
+
+    const response = await fetch(`http://localhost:3003/products/${id}`, {
+      method: "DELETE",
+
+    }).then(async (response) => {
+      if (response.status == 200) {
+        alert("Success! Product deleted");
+      } else {
+        alert("Error! Please try again.");
+      }
+    });
+  };
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -30,7 +45,7 @@ function ProductTable(props) {
                         <td>{prodduct.price}</td>
                         <td>
                             <Link  to={"/edit/"+prodduct._id}>  Edit </Link>
-                          <Button variant="danger"  >
+                          <Button variant="danger"  onClick={() => deleteProduct(prodduct._id)}>
                             Delete
                           </Button>
                         </td>

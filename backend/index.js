@@ -156,6 +156,26 @@ app.put("/products/:id", async (req, res) => {
   }
 });
 
+// Get A Product
+app.delete("/products/:id", async (req, res) => {
+  try {
+    //const result = await Product.deleteOne({_id:req.params.id});
+    const result = await Product.findByIdAndDelete({ _id: req.params.id }); // return deleted product
+    if (result) {
+      res.status(200).send({
+        success: true,
+        message: "A product deleted!",
+        data: result,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "A product was not found with!",
+      });
+    }
+  } catch (error) {}
+});
+
 app.listen(PORT, async () => {
   await connectDB();
 

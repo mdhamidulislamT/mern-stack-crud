@@ -1,7 +1,6 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import { useNavigate } from "react-router-dom";
 
 function Header2() {
@@ -26,7 +25,9 @@ function Header2() {
           ) : (
             <Nav className="me-auto"> </Nav>
           )}
-
+          
+          <Nav.Link className="text-info" href="/profile"> {auth? JSON.parse(auth).data.name : ''} </Nav.Link>
+            {auth ? "" : <Nav.Link href="/signup"> Signup </Nav.Link>}
           <Nav>
             {auth ? (
               <Nav.Link onClick={logout} href="/login">
@@ -36,8 +37,7 @@ function Header2() {
             ) : (
               <Nav.Link href="/login"> Login </Nav.Link>
             )}
-            <Nav.Link className="text-info" href="/profile"> {auth? JSON.parse(auth).data.name : ''} </Nav.Link>
-            {auth ? "" : <Nav.Link href="/signup"> Signup </Nav.Link>}
+            
           </Nav>
         </Navbar.Collapse>
       </Container>

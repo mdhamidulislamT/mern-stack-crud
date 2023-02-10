@@ -1,5 +1,4 @@
 import "./App.css";
-import Header from "./Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductList from "./products/ProductList";
 import Add from "./products/Add";
