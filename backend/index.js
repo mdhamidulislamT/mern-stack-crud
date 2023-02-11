@@ -24,13 +24,13 @@ app.post("/register", async (req, res) => {
       password: password.toString(),
     });
 
-    let userData = await newUser.save();
-    userData = userData.toObject();
-    delete userData.password;
+    let user = await newUser.save();
+    user = user.toObject();
+    delete user.password;
 
     res.status(200).send({
       message: "User created successfully!",
-      data: { userData },
+      data: { user },
     });
   } catch (error) {
     res.status(500).send({
@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
 // Get All Products
 app.get("/products", async (req, res) => {
   try {
-    let products = await Product.find();
+    let products = await Product.find({});
 
     res.status(200).send({
       message: "All Products Data fetched successfully!",
@@ -93,7 +93,7 @@ app.post("/products", async (req, res) => {
       name: name,
       price: price,
       category: category,
-      userId: userId,
+      user: userId,
     });
 
     let productData = await newProduct.save();

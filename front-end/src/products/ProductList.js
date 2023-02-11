@@ -88,7 +88,7 @@ const ProductList = () => {
 
         <Col md={6} className="mt-3">
             <Form.Group className="mb-3" controlId="searchProduct">
-            <Form.Control type="text" placeholder="Search Your Products..." onChange={(e) => setSearchTerm(e.target.value)} />
+            <Form.Control type="text" autoComplete="off" placeholder="Search Your Products..." onChange={(e) => setSearchTerm(e.target.value)} />
           </Form.Group>
         </Col>
         <Col md={{ span: 2, offset: 4 }} className="mt-3">

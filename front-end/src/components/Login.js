@@ -32,7 +32,7 @@ function Login() {
 
     const user = await response.json();
     if (user.data.name) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user.data));
       navigate("/");
     } else {
       //alert("Please Enter correct details")

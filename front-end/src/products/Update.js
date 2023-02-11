@@ -25,7 +25,6 @@ function Update() {
 
   // Create a new user of data
   const getProduct = async () => {
-    let userId = JSON.parse(localStorage.getItem("user")).data._id;
 
     if (id) {
       let result = await fetch(`http://localhost:3003/products/${id}`);
@@ -39,7 +38,9 @@ function Update() {
 
   // Update a new user of data
   const collectData = async () => {
-    let userId = JSON.parse(localStorage.getItem("user")).data._id;
+    let userId = JSON.parse(localStorage.getItem("user"))._id
+
+
 
     if (!name || !price || !category) {
       setError(true);

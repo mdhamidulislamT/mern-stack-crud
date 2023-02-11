@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
 
 // create product schema
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
     name: {
       type: String,
       required: true,
@@ -18,14 +20,14 @@ const productSchema = new mongoose.Schema({
         min: [3, "too short"],
         maxlength: [30, "too long"],
       },
-    userId: {
-        type: String,
-        required: [true, "UserId is required"],
-      },
     createdAt: {
       type: Date,
       default: Date.now,
     },
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User"
+    }
   });
 
   // create User model

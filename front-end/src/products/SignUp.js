@@ -32,8 +32,8 @@ function SignUp() {
       },
     });
     const result = await response.json();
+    localStorage.setItem('user', JSON.stringify(result.data.user))
     navigate('/');
-    localStorage.setItem('user', JSON.stringify(result))
   };
 
   return (

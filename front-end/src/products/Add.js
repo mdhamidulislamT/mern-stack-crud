@@ -22,7 +22,7 @@ function Add() {
   })
   // Create a new user of data
   const collectData = async () => {
-    let userId = JSON.parse(localStorage.getItem("user")).data._id;
+    let userId = JSON.parse(localStorage.getItem("user"))._id
 
     if (!name || !price || !category) {
       setError(true);

@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         min: [3, "too short"],
         maxlength: [10, "too long"],
       },
+    status: {
+      type: String,
+      enum:["active", "inactive"],
+      default: 'active',
+    },
     createdAt: {
       type: Date,
       default: Date.now,

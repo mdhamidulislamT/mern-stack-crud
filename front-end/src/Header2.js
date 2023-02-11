@@ -26,14 +26,21 @@ function Header2() {
             <Nav className="me-auto"> </Nav>
           )}
           
-          <Nav.Link className="text-info" href="/profile"> {auth? JSON.parse(auth).data.name : ''} </Nav.Link>
-            {auth ? "" : <Nav.Link href="/signup"> Signup </Nav.Link>}
+          
+
+
+            <Nav>
+            {auth ? (
+              <Nav.Link className="fw-bolder"  href="/profile"> {JSON.parse(auth).name}</Nav.Link>
+            ) : (
+              <Nav.Link href="/signup"> Signup </Nav.Link>
+            )}
+            
+          </Nav>
+
           <Nav>
             {auth ? (
-              <Nav.Link onClick={logout} href="/login">
-                {" "}
-                Logout{" "}
-              </Nav.Link>
+              <Nav.Link onClick={logout} href="/login"> Logout </Nav.Link>
             ) : (
               <Nav.Link href="/login"> Login </Nav.Link>
             )}
