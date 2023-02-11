@@ -17,7 +17,7 @@ function Add() {
   const notify = (msg) => toast.success(msg, {
     theme: "colored"
   })
-  const notifyEror = (msg) => toast.error(msg, {
+  const notifyError = (msg) => toast.error(msg, {
     theme: "colored"
   })
   // Create a new user of data
@@ -44,7 +44,7 @@ function Add() {
       setPrice("");
       setCategory("");
     } else {
-      notifyEror("Error! Please try again.");
+      notifyError("Error! Please try again.");
     }
   };
 

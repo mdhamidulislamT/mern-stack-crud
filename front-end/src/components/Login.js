@@ -10,6 +10,7 @@ import Hero from "./Hero";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +35,8 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
     } else {
-      alert("Please Enter correct details")
+      //alert("Please Enter correct details")
+      setError("Invalid Login Credentials")
     }
 
   };
@@ -45,6 +47,7 @@ function Login() {
       <Row>
         <Col md={3}></Col>
         <Col md={6}>
+             <span className="text-danger fw-bolder"> {error?? ''} </span> 
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>

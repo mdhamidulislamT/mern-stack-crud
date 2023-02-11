@@ -15,7 +15,7 @@ function Update() {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const notifyEror = (msg) => toast.error(msg, {
+  const notifyError = (msg) => toast.error(msg, {
     theme: "colored"
   })
   const { id } = useParams();
@@ -57,7 +57,7 @@ function Update() {
       if (response.status == 200) {
         navigate('/');
       } else {
-        notifyEror("Error! Please try again.");
+        notifyError("Error! Please try again.");
       }
     });
   };

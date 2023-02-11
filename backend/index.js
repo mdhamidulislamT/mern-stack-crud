@@ -176,6 +176,40 @@ app.delete("/products/:id", async (req, res) => {
   } catch (error) {}
 });
 
+
+// Search Product(s)
+app.get("/search/:key", async (req, res) => {
+  try {
+    
+    const product = await Product.find().or([
+          { 
+            'name': { $regex: req.params.key }
+          },
+          { 
+            'category': { $regex: req.params.key }
+          }
+        ]
+      );
+
+    if (product) {
+      res.status(200).send({
+        success: true,
+        message: "Product Found",
+        data: product,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "Product not Found",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 app.listen(PORT, async () => {
   await connectDB();
 
