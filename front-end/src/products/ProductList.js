@@ -29,7 +29,7 @@ const ProductList = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      // Send fetch request here
+      // Send fetch request for Search
       searchProducts(searchTerm)
     }, 2000)
 
