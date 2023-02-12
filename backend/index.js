@@ -148,7 +148,7 @@ app.put("/products/:id", async (req, res) => {
       { new: true }
     );
 
-    res.send({message: "Product Data created successfully!"});
+    res.send({ message: "Product Data created successfully!" });
   } catch (error) {
     res.status(500).send({
       message: error.message,
@@ -176,20 +176,19 @@ app.delete("/products/:id", async (req, res) => {
   } catch (error) {}
 });
 
-
 // Search Product(s)
 app.get("/search/:key", async (req, res) => {
   try {
-    
+
+    const searchKey = req.params.key;
     const product = await Product.find().or([
-          { 
-            'name': { $regex: req.params.key }
-          },
-          { 
-            'category': { $regex: req.params.key }
-          }
-        ]
-      );
+      {
+        name: { $regex: searchKey },
+      },
+      {
+        category: { $regex: searchKey },
+      },
+    ]);
 
     if (product) {
       res.status(200).send({
