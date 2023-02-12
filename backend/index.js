@@ -72,11 +72,24 @@ app.post("/login", async (req, res) => {
 // Get All Products
 app.get("/products", async (req, res) => {
   try {
-    let products = await Product.find({});
 
+    console.warn(req.query);
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const size = req.query.size ? parseInt(req.query.size) : 5;
+
+    const skip = (page-1) * size;
+
+    const total = await Product.countDocuments();
+    let products = await Product.find().skip(skip).limit(size);
+    //let products = await Product.find({});
+
+    
     res.status(200).send({
       message: "All Products Data fetched successfully!",
       data: { products },
+      total: { total },
+      page: { page },
+      size: { size },
     });
   } catch (error) {
     res.status(500).send({
