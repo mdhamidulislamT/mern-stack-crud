@@ -183,10 +183,10 @@ app.get("/search/:key", async (req, res) => {
     const searchKey = req.params.key;
     const product = await Product.find().or([
       {
-        name: { $regex: searchKey },
+        name: { $regex: searchKey, $options: 'i' }, // case insensitive search 
       },
       {
-        category: { $regex: searchKey },
+        category: { $regex: searchKey, $options: 'i' }, // case insensitive search 
       },
     ]);
 
