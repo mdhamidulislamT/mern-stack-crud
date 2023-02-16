@@ -7,12 +7,28 @@ import { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
 import { ToastContainer, toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
-function Add() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [error, setError] = useState(false);
+  const Add = () => {
+
+  const formik = useFormik({
+    initialValues:{
+      name: "",
+      category: "",
+      price: "",
+    },
+    validationSchema: yup.object({
+      name: yup.string().min(3,"Name at least 3 chars").required(),
+      category: yup.string().min(2,"Name at least 2 chars").required(),
+      price: yup.number().required(),
+    }),
+    onSubmit: (values, {resetForm})=>{
+      sendData(values);
+      resetForm({values: ""});
+    },
+      
+  });
   
   const notify = (msg) => toast.success(msg, {
     theme: "colored"
@@ -21,13 +37,11 @@ function Add() {
     theme: "colored"
   })
   // Create a new user of data
-  const collectData = async () => {
-    let userId = JSON.parse(localStorage.getItem("user"))._id
+  const sendData = async (values) => {
 
-    if (!name || !price || !category) {
-      setError(true);
-      return;
-    }
+    const { name, price, category, } = values;
+
+    let userId = JSON.parse(localStorage.getItem("user"))._id
 
     const response = await fetch("http://localhost:3003/products", {
       method: "POST",
@@ -40,9 +54,6 @@ function Add() {
     const result = await response.json();
     if (result.data) {
       notify(result.message);
-      setName("");
-      setPrice("");
-      setCategory("");
     } else {
       notifyError("Error! Please try again.");
     }
@@ -54,49 +65,54 @@ function Add() {
         <Hero title="Add A New Product" />
         <Col md={3}></Col>
         <Col md={6}>
-          <Form>
+          <Form onSubmit={formik.handleSubmit}>
             
-            <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
+                name="name"
+                id="name"
                 placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formik.values.name}
+                onChange={formik.handleChange}
               />
-              { error ? !name ? <span className="text-danger"> required field </span> : '' : '' }
+              { formik.touched.name && formik.errors.name  &&  (<span className="text-danger"> {formik.errors.name} </span>)}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicCategory">
+            <Form.Group className="mb-3">
               <Form.Label> Category </Form.Label>
               <Form.Control
                 type="text"
+                name="category"
+                id="category"
                 placeholder="Enter Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={formik.values.category}
+                onChange={formik.handleChange}
               />
-              { error ? !category ? <span className="text-danger"> required field </span> : '' : '' }
+              { formik.touched.category && formik.errors.category  &&  (<span className="text-danger"> {formik.errors.category} </span>)}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3">
               <Form.Label> Price </Form.Label>
               <Form.Control
                 type="text"
+                name="price"
+                id="price"
                 placeholder="Price :250"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                value={formik.values.price}
+                onChange={formik.handleChange}
               />
-              { error ? !price ? <span className="text-danger"> required field </span> : '' : '' }
+              { formik.touched.price && formik.errors.price  &&  (<span className="text-danger"> {formik.errors.price} </span>)}
 
             </Form.Group>
-            <Button
-              variant="primary"
-              type="button"
-              size="lg"
-              onClick={collectData}
-            >
-              Submit
-            </Button>
+
+            <div className="d-grid gap-2">
+              <Button variant="primary" size="md" type="submit">
+                Save
+              </Button>
+            </div>
+
           </Form>
         </Col>
       </Row>

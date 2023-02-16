@@ -6,30 +6,32 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 
 
-function SignUp() {
+ const SignUp = () => {
+
   const navigate = useNavigate();
 
-  const formik =useFormik({
+  const formik = useFormik({
     initialValues:{
       name: "",
       email: "",
       password: "",
     },
+    validationSchema: yup.object({
+      name: yup.string().min(3,"Name at least 3 chars").required(),
+      email: yup.string().email().required(),
+      password: yup.string().min(6,"Password at least 6 chars").required(),
+    }),
     onSubmit: (values, {resetForm})=>{
-      console.log(values);
-      collectData(values);
-      resetForm({values: ""})
-    }
+      sendData(values);
+      resetForm({values: ""});
+    },
       
   });
-
-  /* name: string().min(2,"min 2 char").required(),
-      email: string().email().required(),
-      password: string().min(2,"min 6 char").required(), */
 
   useEffect(()=>{
     const auth = localStorage.getItem('user');
@@ -41,7 +43,7 @@ function SignUp() {
 
 
   // Create a new user of data
-   const collectData = async (values) => {
+   const sendData = async (values) => {
 
     console.log(values);
     const { name, email, password} = values;
@@ -74,6 +76,7 @@ function SignUp() {
                 value={formik.values.name}
                 onChange={formik.handleChange}
               />
+              { formik.touched.name && formik.errors.name  &&  (<span className="text-danger"> {formik.errors.name} </span>)}
             </Form.Group>
 
             <Form.Group className="mb-3" >
@@ -89,6 +92,8 @@ function SignUp() {
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
+              <br />
+              { formik.touched.email && formik.errors.email  &&  (<span className="text-danger"> {formik.errors.email} </span>)}
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -101,14 +106,15 @@ function SignUp() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
               />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              size="lg"
-            >
-              Submit
-            </Button>
+              { formik.touched.password && formik.errors.password  &&  (<span className="text-danger"> {formik.errors.password} </span>)}
+              </Form.Group>
+
+                <div className="d-grid gap-2">
+                  <Button variant="primary" size="md" type="submit">
+                    Save
+                  </Button>
+                </div>
+                
           </Form>
         </Col>
       </Row>
