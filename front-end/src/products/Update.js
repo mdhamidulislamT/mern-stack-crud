@@ -25,7 +25,7 @@ const Update = () => {
     getProduct();
   }, []);
 
-  // Create a new user of data
+  // Create a New User
   let productData = 'nodata';
   const getProduct = async () => {
 
