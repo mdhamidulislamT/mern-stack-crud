@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-  const Add = () => {
+const Add = () => {
 
   const formik = useFormik({
     initialValues:{

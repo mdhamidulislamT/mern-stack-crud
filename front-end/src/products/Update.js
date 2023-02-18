@@ -7,12 +7,14 @@ import { useEffect, useState } from "react";
 import { json, useNavigate, useParams } from "react-router-dom";
 import Hero from "../components/Hero";
 import { ToastContainer, toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
-function Update() {
+const Update = () => {
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const notifyError = (msg) => toast.error(msg, {
@@ -24,28 +26,46 @@ function Update() {
   }, []);
 
   // Create a new user of data
+  let productData = 'nodata';
   const getProduct = async () => {
 
     if (id) {
       let result = await fetch(`http://localhost:3003/products/${id}`);
-      result = await result.json();
+      productData = await result.json();
+      //console.log(productData);
+      formik.values.name = productData.data.name;
+      formik.values.price = productData.data.price;
+      formik.values.category = productData.data.category;
+       setName(productData.data.name);
+      setPrice(productData.data.price);
+      setCategory(productData.data.category);
 
-      setName(result.data.name);
-      setPrice(result.data.price);
-      setCategory(result.data.category);
     }
   };
 
+  const formik = useFormik({
+    
+    initialValues:{
+      name: "",
+      category: "",
+      price: "",
+    },
+    validationSchema: yup.object({
+      name: yup.string().min(3,"Name at least 3 chars").required(),
+      category: yup.string().min(2,"Name at least 2 chars").required(),
+      price: yup.number().required(),
+    }),
+    onSubmit: (values, {resetForm})=>{
+      sendData(values);
+      resetForm({values: ""});
+    },
+      
+  });
+
   // Update a new user of data
-  const collectData = async () => {
-    let userId = JSON.parse(localStorage.getItem("user"))._id
+  const sendData = async (values) => {
 
-
-
-    if (!name || !price || !category) {
-      setError(true);
-      return;
-    }
+    const { name, price, category, } = values;
 
     const response = await fetch(`http://localhost:3003/products/${id}`, {
       method: "PUT",
@@ -54,7 +74,6 @@ function Update() {
         "Content-Type": "application/json",
       },
     }).then(async (response) => {
-      console.log("status code", response.status);
       if (response.status == 200) {
         navigate('/');
       } else {
@@ -69,71 +88,54 @@ function Update() {
         <Hero title="Update Product" />
         <Col md={3}></Col>
         <Col md={6}>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicName">
+          <Form onSubmit={formik.handleSubmit}>
+            
+          <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
+                name="name"
+                id="name"
                 placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formik.values.name}
+                onChange={formik.handleChange}
               />
-              {error ? (
-                !name ? (
-                  <span className="text-danger"> required field </span>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
+              { formik.touched.name && formik.errors.name  &&  (<span className="text-danger"> {formik.errors.name} </span>)}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicCategory">
+            <Form.Group className="mb-3">
               <Form.Label> Category </Form.Label>
               <Form.Control
                 type="text"
+                name="category"
+                id="category"
                 placeholder="Enter Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={formik.values.category}
+                onChange={formik.handleChange}
               />
-              {error ? (
-                !category ? (
-                  <span className="text-danger"> required field </span>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
+              { formik.touched.category && formik.errors.category  &&  (<span className="text-danger"> {formik.errors.category} </span>)}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3">
               <Form.Label> Price </Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                name="price"
+                id="price"
+                placeholder="Price :250"
+                value={formik.values.price}
+                onChange={formik.handleChange}
               />
-              {error ? (
-                !price ? (
-                  <span className="text-danger"> required field </span>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
+              { formik.touched.price && formik.errors.price  &&  (<span className="text-danger"> {formik.errors.price} </span>)}
+
             </Form.Group>
-            <Button
-              variant="primary"
-              type="button"
-              size="lg"
-              onClick={collectData}
-            >
-              Submit
-            </Button>
+
+            <div className="d-grid gap-2">
+              <Button variant="primary" size="md" type="submit">
+                Save
+              </Button>
+            </div>
+            
           </Form>
         </Col>
       </Row>
