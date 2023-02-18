@@ -1,16 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
+mongoose.set('strictQuery', false);
 
 // DATABASE -> collections -> document
-const connectDB = async () => {
-    try {
-      await mongoose.connect("mongodb://127.0.0.1:27017/mern-stack-product");
-      console.log("mongoose db is connected");
-    } catch (error) {
-      console.log("mongoose db is connected");
-      console.log(error);
-      process.exit(1);
-    }
-  };
+
+ const connectDB = async () => {
+    mongoose
+        .connect('mongodb+srv://hamidlive6:N1vU4icvRdnK73kK@cluster0.dniojus.mongodb.net/Cluster0?retryWrites=true&w=majority', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        .then(() => console.log('Connected Successfully'))
+        .catch((err) => console.error(err));
+}
 
   module.exports = connectDB;
